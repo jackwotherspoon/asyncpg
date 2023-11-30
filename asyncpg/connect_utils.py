@@ -854,14 +854,12 @@ async def __connect_addr(
 
     proto_factory = lambda: protocol.Protocol(
         addr, connected, params, record_class, loop)
-    print(params)
+
     if isinstance(addr, str):
         # UNIX socket
-        print("Unix attempt!")
         connector = loop.create_unix_connection(proto_factory, addr)
 
     elif params.ssl and params.direct_tls:
-        print("Direct TLS!")
         # if ssl and direct_tls are given, skip STARTTLS and perform direct
         # SSL connection
         connector = loop.create_connection(
@@ -869,25 +867,20 @@ async def __connect_addr(
         )
 
     elif params.socket_callback:
-        print("Using socket callback!")
         # if socket factory callback is given, create socket and use
         # for connection
         sock = await params.socket_callback()
-        sock = sock.dup()
-        print("Socket type: ", type(sock))
         connector = loop.create_connection(proto_factory, sock=sock)
 
     elif params.ssl:
-        print("Reg ssl!")
         connector = _create_ssl_connection(
             proto_factory, *addr, loop=loop, ssl_context=params.ssl,
             ssl_is_advisory=params.sslmode == SSLMode.prefer)
     else:
-        print("Hitting else!")
         connector = loop.create_connection(proto_factory, *addr)
 
     tr, pr = await connector
-    print("About to connect!")
+
     try:
         await connected
     except (
