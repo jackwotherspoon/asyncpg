@@ -857,9 +857,11 @@ async def __connect_addr(
     print(params)
     if isinstance(addr, str):
         # UNIX socket
+        print("Unix attempt!")
         connector = loop.create_unix_connection(proto_factory, addr)
 
     elif params.ssl and params.direct_tls:
+        print("Direct TLS!")
         # if ssl and direct_tls are given, skip STARTTLS and perform direct
         # SSL connection
         connector = loop.create_connection(
@@ -875,10 +877,12 @@ async def __connect_addr(
         connector = loop.create_connection(proto_factory, sock=sock)
 
     elif params.ssl:
+        print("Reg ssl!")
         connector = _create_ssl_connection(
             proto_factory, *addr, loop=loop, ssl_context=params.ssl,
             ssl_is_advisory=params.sslmode == SSLMode.prefer)
     else:
+        print("Hitting else!")
         connector = loop.create_connection(proto_factory, *addr)
 
     tr, pr = await connector
