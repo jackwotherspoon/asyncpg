@@ -882,7 +882,7 @@ async def __connect_addr(
         connector = loop.create_connection(proto_factory, *addr)
 
     tr, pr = await connector
-
+    print("About to connect!")
     try:
         await connected
     except (
