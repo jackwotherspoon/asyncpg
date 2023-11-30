@@ -854,7 +854,7 @@ async def __connect_addr(
 
     proto_factory = lambda: protocol.Protocol(
         addr, connected, params, record_class, loop)
-
+    print(params)
     if isinstance(addr, str):
         # UNIX socket
         connector = loop.create_unix_connection(proto_factory, addr)

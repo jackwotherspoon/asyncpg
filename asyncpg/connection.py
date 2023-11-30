@@ -2325,7 +2325,7 @@ async def connect(dsn=None, *,
 
     if loop is None:
         loop = asyncio.get_event_loop()
-
+    print("Socket callback type: ", type(socket_callback))
     async with compat.timeout(timeout):
         return await connect_utils._connect(
             loop=loop,
