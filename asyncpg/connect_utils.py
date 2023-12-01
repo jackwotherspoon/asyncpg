@@ -872,7 +872,7 @@ async def __connect_addr(
         sock = await params.socket_callback()
         print(addr)
         if params.ssl:
-            connector = loop.create_connection(proto_factory, sock=sock, ssl=params.ssl, server_hostname=)
+            connector = loop.create_connection(proto_factory, sock=sock, ssl=params.ssl, server_hostname=addr[0])
         else:
             connector = loop.create_connection(proto_factory, sock=sock)
 
